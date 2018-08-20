@@ -5,9 +5,6 @@
 
 void UTankTrack::SetThrottle(float Throttle)
 {
-	FString TrackName = GetName();
-	UE_LOG(LogTemp, Warning, TEXT("%s: Throttling At %f Speed"), *TrackName, Throttle)
-
 	FVector ForceApplied = GetForwardVector() * FMath::Clamp<float>(Throttle, -0.5f, 0.5f) * TrackMaxDrivingForce;
 
 	//USceneComponent is cast to UPrimitiveComponent to allow collisions to occur
