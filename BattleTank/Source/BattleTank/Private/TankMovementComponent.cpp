@@ -28,11 +28,20 @@ void UTankMovementComponent::IntendMoveRight(float Throw)
 	}
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw);
+	/*FString TankName = GetOwner()->GetName();
+	UE_LOG(LogTemp, Warning, TEXT("%s: Velocity: %f"), *TankName, Throw)*/
 }
 
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
 {
-	FString TankName = GetOwner()->GetName();
-	FString MoveVelocityString = MoveVelocity.ToString();
-	UE_LOG(LogTemp,Warning,TEXT("%s: Velocity: %s"),*TankName,*MoveVelocityString)
+	// No need to call Super as we're replacing the functionality
+	
+	FVector TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	FVector AIForwardIntention = MoveVelocity.GetSafeNormal();
+	float ForwardThrow = FVector::DotProduct(TankForward, AIForwardIntention);
+	//TODO Cross Product Always Too Low
+	float RightThrow = FVector::CrossProduct(TankForward, AIForwardIntention).Z*10;
+	IntendMoveForward(ForwardThrow);
+	IntendMoveRight(RightThrow);
+	//UE_LOG(LogTemp,Warning,TEXT("%s: Velocity: %s"),*TankName,*MoveVelocityString)
 }
