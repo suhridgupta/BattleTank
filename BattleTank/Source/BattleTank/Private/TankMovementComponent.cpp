@@ -41,6 +41,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	float ForwardThrow = FVector::DotProduct(TankForward, AIForwardIntention);
 	//TODO Cross Product Always Too Low
 	float RightThrow = FVector::CrossProduct(TankForward, AIForwardIntention).Z*10;
+	RightThrow = FMath::Clamp(RightThrow, -1.0f, 1.0f);
 	IntendMoveForward(ForwardThrow);
 	IntendMoveRight(RightThrow);
 	//UE_LOG(LogTemp,Warning,TEXT("%s: Velocity: %s"),*TankName,*MoveVelocityString)
