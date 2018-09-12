@@ -11,7 +11,7 @@ void ATankAIController::BeginPlay()
 	Super::BeginPlay();
 
 	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	if (!PlayerTank)
+	if (!ensure(PlayerTank))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("AIController can't find player tank"));
 	}
@@ -27,7 +27,7 @@ void ATankAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	auto ControlledTank = Cast<ATank>(GetPawn());
-	if (PlayerTank && ControlledTank)
+	if (ensure(PlayerTank && ControlledTank))
 	{
 		// TODO Move towards the player
 		MoveToActor(PlayerTank, AcceptanceRadius, true, true, false);

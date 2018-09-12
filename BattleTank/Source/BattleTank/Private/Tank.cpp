@@ -4,7 +4,6 @@
 #include "TankBarrel.h"
 #include "Projectile.h"
 #include "TankAimingComponent.h"
-#include "TankMovementComponent.h"
 #include "Tank.h"
 
 
@@ -45,7 +44,7 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 
 void ATank::AimAt(FVector HitLocation)
 {
-	if (!TankAimingComponent) { return; }
+	if (!ensure(TankAimingComponent)) { return; }
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
@@ -53,7 +52,7 @@ void ATank::Fire()
 {
 	float CurrentTime = GetWorld()->GetTimeSeconds();
 	bool isReloaded = (CurrentTime - LastFireTime) > ReloadTimeInSeconds;
-	if (!Barrel) { return; }
+	if (!ensure(Barrel)) { return; }
 	// Spawn a projectile at the socket location on the barrel
 	if (Barrel && isReloaded)
 	{
