@@ -9,7 +9,7 @@
  * 
  */
 
-class ATank;
+class UTankAimingComponent;
 
 UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
@@ -23,5 +23,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	float AcceptanceRadius = 3000.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed = 4000; // TODO find sensible default
+
+	UTankAimingComponent* AimingComponent = nullptr;
 	
 };
