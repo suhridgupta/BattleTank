@@ -9,6 +9,8 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if(!GetPawn()) { return; } //eg if not possessed
+
 	AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (ensure(AimingComponent))
 	{

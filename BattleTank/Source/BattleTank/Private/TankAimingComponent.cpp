@@ -28,6 +28,7 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
+	CurrentTime = GetWorld()->GetTimeSeconds();
 	if ((CurrentTime - LastFireTime) < ReloadTimeInSeconds)
 	{
 		FiringStatus = EFiringStatus::Reloading;
@@ -96,7 +97,6 @@ bool UTankAimingComponent::IsBarrelMoving()
 
 void UTankAimingComponent::Fire()
 {
-	CurrentTime = GetWorld()->GetTimeSeconds();
 	if (!ensure(Barrel && ProjectileBlueprint)) { return; }
 	// Spawn a projectile at the socket location on the barrel
 	if (FiringStatus != EFiringStatus::Reloading)
