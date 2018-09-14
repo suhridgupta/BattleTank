@@ -41,9 +41,6 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float LineTraceRange = 1000000;
 
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float LaunchSpeed = 4000; // TODO find sensible default
-
 	UTankAimingComponent* AimingComponent = nullptr;
 
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
