@@ -5,7 +5,7 @@
 
 UTankTrack::UTankTrack()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UTankTrack::BeginPlay()
@@ -14,11 +14,18 @@ void UTankTrack::BeginPlay()
 	OnComponentHit.AddDynamic(this,&UTankTrack::OnHit);
 }
 
-void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	Super::TickComponent(DeltaTime,TickType,ThisTickFunction);
+	DriveTrack();
+	ApplySidewaysForce();
+	CurrentThrottle = 0.0f;
+}
 
+void UTankTrack::ApplySidewaysForce()
+{
 	float SlippageSpeed = FVector::DotProduct(GetRightVector(),GetComponentVelocity());
+
+	float DeltaTime = GetWorld()->GetDeltaSeconds();
 
 	FVector CorrectionAcceleration = -SlippageSpeed/DeltaTime*GetRightVector();
 
@@ -32,7 +39,15 @@ void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActor
 
 void UTankTrack::SetThrottle(float Throttle)
 {
-	FVector ForceApplied = GetForwardVector() * FMath::Clamp<float>(Throttle, -0.5f, 0.5f) * TrackMaxDrivingForce;
+	CurrentThrottle += Throttle;
+	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle,-1.5f,1.5f);
+}
+
+void UTankTrack::DriveTrack()
+{
+	FVector ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
+
+	CurrentThrottle = 0.0f;
 	
 	//USceneComponent is cast to UPrimitiveComponent to allow collisions to occur
 	TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
@@ -41,9 +56,4 @@ void UTankTrack::SetThrottle(float Throttle)
 	FVector ForceLocation = GetComponentLocation();
 	
 	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
-}
-
-void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
-{
-	UE_LOG(LogTemp,Warning,TEXT("Generating Hit Events"))
 }
