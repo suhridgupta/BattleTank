@@ -37,7 +37,7 @@ public:
 	EFiringStatus GetFiringStatus() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	int GetRoundsLeft() const;
+	int32 GetRoundsLeft() const;
 
 private:
 	void MoveBarrelTowards(FVector AimDirection);
@@ -51,10 +51,14 @@ private:
 	FVector AimDirection = FVector(0);
 
 	float CurrentTime;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeInSeconds = 3.0f;
+
 	float LastFireTime = 0.0f;
 
-	int RoundsLeft = 3;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 RoundsLeft = 3;
 
 protected:
 	virtual void BeginPlay() override;
@@ -70,7 +74,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 4000.0f;
 
 };
