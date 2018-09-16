@@ -41,7 +41,7 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 void ATankPlayerController::OnPossessedTankDeath()
 {
 	StartSpectatingOnly(); // Lose Control of Playable Tank
-	UE_LOG(LogTemp,Warning,TEXT("Player Tank is Dead"))
+	//UE_LOG(LogTemp,Warning,TEXT("Player Tank is Dead"))
 }
 
 void ATankPlayerController::Tick(float DeltaTime)

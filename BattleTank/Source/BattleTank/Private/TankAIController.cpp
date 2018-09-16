@@ -25,19 +25,21 @@ void ATankAIController::BeginPlay()
 void ATankAIController::SetPawn(APawn* InPawn)
 {
 	Super::SetPawn(InPawn);
-	if(!InPawn) { 
-		UE_LOG(LogTemp,Warning,TEXT("In Pawn Not Found"))
-		return; 
-	}
+	if(!InPawn) { return; }
 	ATank* AIPossessedTank = Cast<ATank>(InPawn);
 	if(!ensure(AIPossessedTank)) { return; }
 	AIPossessedTank->DeathDelegate.AddUniqueDynamic(this,&ATankAIController::OnPossessedTankDeath);
-	UE_LOG(LogTemp,Warning,TEXT("Death Function Added"))
+	//UE_LOG(LogTemp,Warning,TEXT("Death Function Added"))
 }
 
 void ATankAIController::OnPossessedTankDeath()
 {
-	UE_LOG(LogTemp,Warning,TEXT("AI Tank is Dead"))
+	APawn* AITankPawn = GetPawn();
+	if(AITankPawn)
+	{
+		AITankPawn->DetachFromControllerPendingDestroy();
+	}
+	//UE_LOG(LogTemp,Warning,TEXT("AI Tank is Dead"))
 }
 
 // Called every frame
