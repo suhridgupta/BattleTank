@@ -7,13 +7,20 @@
 
 class UTankBarrel;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDeathDelegate);
+
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintPure,Category="Setup")
+	float GetHealthPercentage() const;
+
 	void AimAt(FVector HitLocation);
+
+	FDeathDelegate DeathDelegate;
 
 private:
 	// Sets default values for this pawn's properties

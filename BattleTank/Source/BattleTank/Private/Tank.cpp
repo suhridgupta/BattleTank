@@ -20,6 +20,11 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 }
 
+float ATank::GetHealthPercentage() const
+{
+	return (float)CurrentHealth/(float)StartingHealth;
+}
+
 float ATank::TakeDamage(float DamageAmount,struct FDamageEvent const & DamageEvent,class AController * EventInstigator,AActor * DamageCauser)
 {
 	FString TankName = GetName();
@@ -29,6 +34,7 @@ float ATank::TakeDamage(float DamageAmount,struct FDamageEvent const & DamageEve
 	if(CurrentHealth == 0)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("%s: Dead"),*TankName)
+		DeathDelegate.Broadcast();
 	}
 	UE_LOG(LogTemp,Warning,TEXT("%s: Damage Taken: %i Current Health: %i"),*TankName,DamageToApply,CurrentHealth)
 	return DamageToApply;

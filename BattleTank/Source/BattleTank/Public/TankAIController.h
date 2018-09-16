@@ -21,6 +21,11 @@ private:
 
 	virtual void Tick(float DeltaSeconds) override;
 
+	virtual void SetPawn(APawn* InPawn) override;
+
+	UFUNCTION()
+	void OnPossessedTankDeath();
+
 	UPROPERTY(EditDefaultsOnly, Category="Setup")
 	float AcceptanceRadius = 8000.0f;
 

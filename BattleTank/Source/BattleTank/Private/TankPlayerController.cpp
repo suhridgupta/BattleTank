@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"
 #include "TankPlayerController.h"
 
 
@@ -26,6 +27,21 @@ void ATankPlayerController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("PlayerController possessing: %s"), *(ControlledTank->GetName()));
 	}
+}
+
+void ATankPlayerController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	if(!InPawn) { return; }
+	ATank* PlayerPossessedTank = Cast<ATank>(InPawn);
+	if(!ensure(PlayerPossessedTank)) { return; }
+	PlayerPossessedTank->DeathDelegate.AddUniqueDynamic(this,&ATankPlayerController::OnPossessedTankDeath);
+}
+
+void ATankPlayerController::OnPossessedTankDeath()
+{
+	StartSpectatingOnly(); // Lose Control of Playable Tank
+	UE_LOG(LogTemp,Warning,TEXT("Player Tank is Dead"))
 }
 
 void ATankPlayerController::Tick(float DeltaTime)

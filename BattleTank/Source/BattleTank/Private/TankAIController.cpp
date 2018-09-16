@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "TankAIController.h"
 
@@ -19,6 +20,24 @@ void ATankAIController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("AIController found player: %s"), *(PlayerTank->GetName()));
 	}
+}
+
+void ATankAIController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	if(!InPawn) { 
+		UE_LOG(LogTemp,Warning,TEXT("In Pawn Not Found"))
+		return; 
+	}
+	ATank* AIPossessedTank = Cast<ATank>(InPawn);
+	if(!ensure(AIPossessedTank)) { return; }
+	AIPossessedTank->DeathDelegate.AddUniqueDynamic(this,&ATankAIController::OnPossessedTankDeath);
+	UE_LOG(LogTemp,Warning,TEXT("Death Function Added"))
+}
+
+void ATankAIController::OnPossessedTankDeath()
+{
+	UE_LOG(LogTemp,Warning,TEXT("AI Tank is Dead"))
 }
 
 // Called every frame
