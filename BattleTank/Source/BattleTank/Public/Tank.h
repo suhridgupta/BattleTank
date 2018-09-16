@@ -22,7 +22,13 @@ private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	// Called to bind functionality to input
-	//virtual void SetupPlayerInputComponent(class UInputComponent* inputComponent) override;
+	virtual float TakeDamage(float DamageAmount,struct FDamageEvent const & DamageEvent,class AController * EventInstigator,AActor * DamageCauser) override;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category="Setup")
+	int32 StartingHealth = 100;
+
+	UPROPERTY(VisibleAnywhere, Category="Setup")
+	int32 CurrentHealth = StartingHealth;
 
 };

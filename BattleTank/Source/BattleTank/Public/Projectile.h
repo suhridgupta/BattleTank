@@ -44,4 +44,7 @@ private:
 	URadialForceComponent* ExplosionForce = nullptr;
 
 	void OnTimerExpire();
+
+	UPROPERTY(EditDefaultsOnly,Category="Setup")
+	float ProjectileDamage = 20;
 };

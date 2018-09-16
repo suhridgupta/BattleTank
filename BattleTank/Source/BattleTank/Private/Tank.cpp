@@ -20,9 +20,16 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 }
 
-//// Called to bind functionality to input
-//void ATank::SetupPlayerInputComponent(class UInputComponent* inputComponent)
-//{
-//	Super::SetupPlayerInputComponent(inputComponent);
-//
-//}
+float ATank::TakeDamage(float DamageAmount,struct FDamageEvent const & DamageEvent,class AController * EventInstigator,AActor * DamageCauser)
+{
+	FString TankName = GetName();
+	int32 DamagePoints = FPlatformMath::RoundToInt(DamageAmount);
+	int32 DamageToApply = FMath::Clamp<int32>(DamagePoints,0,CurrentHealth);
+	CurrentHealth -= DamageToApply;
+	if(CurrentHealth == 0)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("%s: Dead"),*TankName)
+	}
+	UE_LOG(LogTemp,Warning,TEXT("%s: Damage Taken: %i Current Health: %i"),*TankName,DamageToApply,CurrentHealth)
+	return DamageToApply;
+}
