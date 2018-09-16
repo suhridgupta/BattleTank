@@ -48,4 +48,17 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
 	ExplosionForce->FireImpulse();
+
+	//Destroying the on screen mesh, does not destroy the projectile bp itself
+	SetRootComponent(ImpactBlast);
+	CollisionMesh->DestroyComponent();
+
+	//Destroys projectile bp after a delay
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle,this,&AProjectile::OnTimerExpire,DestroyDelay,false);
+}
+
+void AProjectile::OnTimerExpire()
+{
+	Destroy();
 }
